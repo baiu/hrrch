@@ -1,0 +1,51 @@
+server:
+    port: 8877
+
+spring:
+    main:
+        banner-mode: "off"
+    application:
+        name: hrrch-service
+    data:
+        mongodb:
+            uri: mongodb://localhost:27017/hrrch
+    datasource:
+        password: PLy]vWdz43
+        url: jdbc:postgresql://localhost:55000/hrrch?reWriteBatchedInserts=true
+        username: hrrch
+    jpa:
+        properties:
+            hibernate:
+                format_sql: true
+                type: trace
+                hbm2ddl:
+                    auto: validate
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+                order_inserts: true
+                order_updates: true
+                jdbc:
+                    batch_size: 20
+                    lob:
+                        non_contextual_creation: true
+                ddl-auto: validate
+        generate-ddl: false
+        show-sql: true
+    sql:
+        init:
+            platform: postgres
+
+role:
+    hierarchy: ROLE_ADMIN > ROLE_MANAGER > ROLE_USER
+
+eureka:
+    instance:
+        preferIpAddress: true
+    client:
+        serviceUrl:
+            #            defaultZone: http://localhost:8761/eureka/
+            defaultZone: http://10.0.1.10:8761/eureka/
+
+token:
+    header: Authorization
+    prefix: 'Bearer '
+    secret: uRAcMrnuynhQvq5wVaVJF7juDhLSurGZ9HVwuLMVLDfmQn4dJ69DEfKFxrLDv22Jj
