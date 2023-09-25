@@ -1,12 +1,13 @@
 package com.baiu.hrrch.catalog;
 
 import com.baiu.hrrch.attribute.AttributeType;
+import com.baiu.hrrch.person.Person;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.Type;
-import com.baiu.hrrch.person.Person;
-
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,12 +20,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import org.hibernate.annotations.Type;
+import org.hibernate.proxy.HibernateProxy;
 
 @Entity(name = "catalog")
-@EqualsAndHashCode
 public class Catalog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -203,5 +202,27 @@ public class Catalog {
 
     public void setPersonal(boolean personal) {
         this.personal = personal;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) {
+            return false;
+        }
+        Catalog catalog = (Catalog) o;
+        return getId() != null && Objects.equals(getId(), catalog.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }

@@ -1,9 +1,11 @@
 package com.baiu.hrrch.facility;
 
-import lombok.EqualsAndHashCode;
 import com.baiu.hrrch.group.Group;
 import com.baiu.hrrch.person.Person;
-
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,12 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import org.hibernate.proxy.HibernateProxy;
 
 @Entity(name = "facility_simple")
-@EqualsAndHashCode
 public class FacilitySimple {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -197,5 +196,27 @@ public class FacilitySimple {
 
     public void setOffice_branch_guid(String office_branch_guid) {
         this.office_branch_guid = office_branch_guid;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) {
+            return false;
+        }
+        FacilitySimple that = (FacilitySimple) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }
